@@ -1,33 +1,49 @@
 "use client";
-import Link from "next/link";
-import { useAuth } from "@/context/AuthContext";
 
-export default function Sidebar() {
-  const { user } = useAuth();
+type Props = {
+  role: "admin" | "intern";
+};
 
+export default function Sidebar({ role }: Props) {
   return (
-    <aside className="w-64 min-h-screen bg-gray-900 text-white flex flex-col p-6">
-      <h2 className="text-xl font-bold mb-8">InternX</h2>
+    <aside className="w-64 bg-blue-600 text-white flex flex-col">
+      <div className="px-6 py-6 border-b border-blue-500">
+        <h1 className="text-2xl font-bold">InternX</h1>
+        <p className="text-sm opacity-80">
+          {role === "admin" ? "Admin Portal" : "Intern Dashboard"}
+        </p>
+      </div>
 
-      <nav className="flex flex-col gap-3 text-sm">
-        <Link
-          href="/dashboard"
-          className="rounded-lg px-3 py-2 hover:bg-gray-800 transition"
-        >
-          Dashboard
-        </Link>
-
-        <Link
-          href="/dashboard/projects"
-          className="rounded-lg px-3 py-2 hover:bg-gray-800 transition"
-        >
-          Projects
-        </Link>
+      <nav className="flex-1 px-4 py-6 space-y-2">
+        <SidebarItem label="Dashboard" />
+        {role === "admin" && (
+          <>
+            <SidebarItem label="Interns" />
+            <SidebarItem label="Tasks" />
+            <SidebarItem label="Performance" />
+            <SidebarItem label="Reports" />
+          </>
+        )}
+        {role === "intern" && (
+          <>
+            <SidebarItem label="My Tasks" />
+            <SidebarItem label="Progress" />
+          </>
+        )}
       </nav>
 
-      <div className="mt-auto text-xs text-gray-400">
-        {user?.role === "admin" ? "Admin View" : "Intern View"}
+      <div className="px-4 py-4 border-t border-blue-500 text-sm opacity-80">
+        © 2026 InternX
       </div>
     </aside>
   );
 }
+
+function SidebarItem({ label }: { label: string }) {
+  return (
+    <div className="rounded-lg px-4 py-2 hover:bg-blue-500 cursor-pointer transition">
+      {label}
+    </div>
+  );
+}
+
