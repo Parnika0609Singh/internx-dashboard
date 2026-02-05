@@ -1,13 +1,4 @@
-Good catch — and **you’re right to pause**. This is exactly the kind of thing that *shouldn’t* be misrepresented, and fixing it is easy.
 
-Right now, your README **does not say you used APIs** anywhere.
-The only place APIs are mentioned is under **“Possible Improvements”**, which is completely safe.
-
-But to make it **100% airtight** (zero chance of confusion), here’s a **corrected version** of the file where APIs are clearly framed as *future scope*, not current usage.
-
-👉 **Replace your README with this** (copy–paste as one file):
-
-```md
 # 🧑‍💻 Intern Admin Dashboard
 
 A role-based admin dashboard built using **Next.js App Router** and **React**, designed to manage different workflows for **admin** and **intern** users. The project focuses on routing, layout composition, and component-based UI development.
