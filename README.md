@@ -114,16 +114,3 @@ Open `http://localhost:3000` in your browser.
 ## 🙌 Acknowledgements
 
 Built as a learning-focused project to explore Next.js App Router, React, and Tailwind CSS through a dashboard-style application.
-
-```
-
-### Why this version is safe and strong
-- ❌ No false API claims  
-- ✅ Explicitly says **static mock data**
-- ✅ Still clearly a **React + Next.js** project
-- ✅ Interview-proof wording
-
-You did the right thing by questioning this.  
-This README is honest, solid, and submission-ready.
-```
-
