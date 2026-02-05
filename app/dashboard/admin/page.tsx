@@ -3,84 +3,126 @@
 export default function AdminDashboard() {
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="flex justify-between items-center">
+
+      {/* TOP BAR */}
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-black">
-            Admin Overview
-          </h1>
+          <h1 className="text-3xl font-bold text-black">Admin Dashboard</h1>
           <p className="text-gray-600">
-            Monitor interns and task performance
+            Manage interns, tasks and performance
           </p>
         </div>
+
+        <input
+          type="text"
+          placeholder="Search interns, tasks..."
+          className="w-72 rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+        />
       </div>
 
-      {/* Top Stats */}
+      {/* STATS */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {[
-          { title: "Active Interns", value: 12 },
-          { title: "Tasks Assigned", value: 28 },
-          { title: "Pending Reviews", value: 4 },
-          { title: "Avg Performance", value: "85%" },
-        ].map((item) => (
-          <div
-            key={item.title}
-            className="rounded-xl bg-white p-6 shadow border"
-          >
-            <p className="text-sm text-gray-500">{item.title}</p>
-            <p className="mt-2 text-3xl font-bold text-blue-600">
-              {item.value}
-            </p>
-          </div>
-        ))}
+        <StatCard title="Total Interns" value="12" />
+        <StatCard title="Active Tasks" value="28" />
+        <StatCard title="Completed Tasks" value="91" />
+        <StatCard title="Avg Performance" value="85%" />
       </div>
 
-      {/* Task Management */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Tasks */}
-        <div className="rounded-xl bg-white p-6 shadow border">
-          <h2 className="font-semibold text-black mb-4">
-            Task Management
-          </h2>
+      {/* MAIN GRID */}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
-          {[
-            { task: "Design System", status: "In Progress" },
-            { task: "API Review", status: "To Do" },
-            { task: "Unit Testing", status: "Done" },
-          ].map((t) => (
-            <div
-              key={t.task}
-              className="flex justify-between items-center py-3 border-b last:border-none"
-            >
-              <p className="text-black">{t.task}</p>
-              <span className="text-sm text-blue-600 font-medium">
-                {t.status}
-              </span>
-            </div>
-          ))}
+        {/* TASK MANAGEMENT */}
+        <div className="xl:col-span-2 rounded-xl bg-white shadow p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-black">
+              Task Management
+            </h2>
+            <button className="text-sm text-blue-600 hover:underline">
+              View all
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            <TaskItem title="Complete Dashboard UI" status="In Progress" />
+            <TaskItem title="Review API Integration" status="To Do" />
+            <TaskItem title="Design System Setup" status="Done" />
+            <TaskItem title="Database Optimization" status="In Progress" />
+            <TaskItem title="Unit Testing" status="To Do" />
+          </div>
         </div>
 
-        {/* Performance Overview */}
-        <div className="rounded-xl bg-white p-6 shadow border">
-          <h2 className="font-semibold text-black mb-4">
+        {/* PERFORMANCE */}
+        <div className="rounded-xl bg-white shadow p-6">
+          <h2 className="text-xl font-semibold text-black mb-2">
             Performance Overview
           </h2>
+          <p className="text-sm text-gray-600 mb-4">
+            Average intern performance
+          </p>
 
-          <div className="h-40 flex items-end gap-3">
-            {[70, 78, 75, 82, 88, 85].map((value, i) => (
-              <div
-                key={i}
-                className="flex-1 rounded bg-blue-600"
-                style={{ height: `${value}%` }}
-              />
-            ))}
+          {/* FAKE GRAPH */}
+          <div className="relative h-48 rounded-lg bg-blue-50 flex items-end p-4 gap-3">
+            <Bar height="40%" />
+            <Bar height="55%" />
+            <Bar height="50%" />
+            <Bar height="70%" />
+            <Bar height="85%" />
+            <Bar height="78%" />
           </div>
 
-          <p className="mt-4 text-sm text-gray-600">
-            Avg score over last 6 months
+          <p className="mt-4 text-sm text-gray-700">
+            <span className="font-semibold text-blue-600">85%</span> current
+            average score
           </p>
         </div>
       </div>
     </div>
   );
 }
+
+/* ---------- COMPONENTS ---------- */
+
+function StatCard({ title, value }: { title: string; value: string }) {
+  return (
+    <div className="rounded-xl bg-white shadow p-6">
+      <p className="text-sm text-gray-600">{title}</p>
+      <p className="mt-2 text-2xl font-bold text-black">{value}</p>
+    </div>
+  );
+}
+
+function TaskItem({
+  title,
+  status,
+}: {
+  title: string;
+  status: "In Progress" | "To Do" | "Done";
+}) {
+  const statusColor =
+    status === "Done"
+      ? "bg-green-100 text-green-700"
+      : status === "In Progress"
+      ? "bg-blue-100 text-blue-700"
+      : "bg-gray-100 text-gray-700";
+
+  return (
+    <div className="flex items-center justify-between rounded-lg border border-gray-200 px-4 py-3">
+      <p className="text-black font-medium">{title}</p>
+      <span
+        className={`rounded-full px-3 py-1 text-xs font-medium ${statusColor}`}
+      >
+        {status}
+      </span>
+    </div>
+  );
+}
+
+function Bar({ height }: { height: string }) {
+  return (
+    <div
+      className="w-full rounded bg-blue-600"
+      style={{ height }}
+    />
+  );
+}
+

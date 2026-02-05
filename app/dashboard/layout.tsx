@@ -1,48 +1,43 @@
 "use client";
 
-type Props = {
-  role: "admin" | "intern";
-};
+import { useAuth } from "@/context/AuthContext";
+import { useRouter, usePathname } from "next/navigation";
+import Sidebar from "@/components/sidebar";
+import { useEffect } from "react";
 
-export default function Sidebar({ role }: Props) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { user } = useAuth();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (!user) {
+      router.replace("/login");
+      return;
+    }
+
+    // Redirect base /dashboard to role-specific dashboard
+    if (pathname === "/dashboard") {
+      router.replace(
+        user.role === "admin"
+          ? "/dashboard/admin"
+          : "/dashboard/intern"
+      );
+    }
+  }, [user, pathname, router]);
+
+  if (!user) return null;
+
   return (
-    <aside className="w-64 bg-blue-600 text-white flex flex-col">
-      <div className="px-6 py-6 border-b border-blue-500">
-        <h1 className="text-2xl font-bold">InternX</h1>
-        <p className="text-sm opacity-80">
-          {role === "admin" ? "Admin Portal" : "Intern Dashboard"}
-        </p>
-      </div>
-
-      <nav className="flex-1 px-4 py-6 space-y-2">
-        <SidebarItem label="Dashboard" />
-        {role === "admin" && (
-          <>
-            <SidebarItem label="Interns" />
-            <SidebarItem label="Tasks" />
-            <SidebarItem label="Performance" />
-            <SidebarItem label="Reports" />
-          </>
-        )}
-        {role === "intern" && (
-          <>
-            <SidebarItem label="My Tasks" />
-            <SidebarItem label="Progress" />
-          </>
-        )}
-      </nav>
-
-      <div className="px-4 py-4 border-t border-blue-500 text-sm opacity-80">
-        © 2026 InternX
-      </div>
-    </aside>
-  );
-}
-
-function SidebarItem({ label }: { label: string }) {
-  return (
-    <div className="rounded-lg px-4 py-2 hover:bg-blue-500 cursor-pointer transition">
-      {label}
+    <div className="flex min-h-screen bg-gray-50">
+      <Sidebar />
+      <main className="flex-1 overflow-y-auto p-8">
+        {children}
+      </main>
     </div>
   );
 }
